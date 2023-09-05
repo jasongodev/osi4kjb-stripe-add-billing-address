@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 */12 * * *'
 jobs:
-  cache-and-install:
+  update-patch:
     runs-on: ubuntu-latest
 
     steps:
