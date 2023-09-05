@@ -1,0 +1,63 @@
+{
+  "name": "osi4kjb-stripe-address-fix",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Jason Go",
+  "license": "Apache-2.0",
+  "type": "module",
+  "source": "src/index.ts",
+  "module": "dist/saf.min.js",
+  "main": "dist/saf.min.js",
+  "browser": "dist/saf.min.js",
+  "scripts": {
+    "lint": "ts-standard",
+    "format": "prettier --ignore-path src/patch.ts --check src/**",
+    "prepare:patch": "tsx createPatch.ts",
+    "prepare:dist": "rimraf ./dist",
+    "build": "run-p lint format prepare:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saf.min.js"
+  },
+  "devDependencies": {
+    "@types/escodegen": "^0.0.7",
+    "@types/esprima": "^4.0.3",
+    "@types/esquery": "^1.5.0",
+    "@types/node": "^20.5.9",
+    "cross-fetch": "^4.0.0",
+    "esbuild": "^0.19.2",
+    "escodegen": "^2.1.0",
+    "esprima": "^4.0.1",
+    "esquery": "^1.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.1",
+    "ts-standard": "^12.0.2",
+    "tsx": "^3.12.8"
+  },
+  "keywords": [],
+  "ts-standard": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "patch.ts"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSameLine": true,
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "endOfLine": "lf",
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxSingleQuote": false,
+    "printWidth": 160,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false,
+    "vueIndentScriptAndStyle": false
+  }
+}

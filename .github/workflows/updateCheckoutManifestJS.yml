@@ -1,0 +1,56 @@
+name: Update checkoutManifestJS
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */12 * * *'
+jobs:
+  cache-and-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: latest
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build package
+        run: pnpm build
+
+      - name: Commit and push changes
+        run: |
+          git add *
+          FILES_CHANGED=$(git diff --staged --name-status)
+          if [[ -n ${FILES_CHANGED} ]]; then
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            git commit -a -m "Update patch.ts"
+            git push origin
+            echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
+          else
+            echo -e "\n[INFO] No files changed."
+          fi
