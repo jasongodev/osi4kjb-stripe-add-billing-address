@@ -1,4 +1,4 @@
-name: Update patch.ts
+name: Update src/patch.ts
 on:
   workflow_dispatch:
   schedule:
