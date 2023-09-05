@@ -46,6 +46,8 @@ jobs:
           git add *
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
+            pnpm version patch
+            git add *
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config user.name "github-actions[bot]"
             git commit -a -m "Update patch.ts"
