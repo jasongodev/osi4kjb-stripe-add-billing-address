@@ -43,14 +43,14 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git add *
+          git add src/patch.ts dist/*
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
             pnpm version patch
-            git add *
+            git add package.json
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config user.name "github-actions[bot]"
-            git commit -a -m "Update patch.ts"
+            git commit -a -m "Updated patch.ts and dist files"
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
           else
