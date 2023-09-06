@@ -17,6 +17,10 @@
  */
 
 // @ts-nocheck
+<<<<<<< HEAD
+=======
+
+>>>>>>> af2628b8fa40942fbb51b1299b741c050b886ff2
 import { addAddress } from './addAddress'
 
 export const patchedCode = (): void => {
