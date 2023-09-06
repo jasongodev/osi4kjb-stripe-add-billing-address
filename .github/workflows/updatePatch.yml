@@ -47,8 +47,8 @@ jobs:
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
             git config user.email "36266783+jasongodev@users.noreply.github.com"
-            git config user.name "github-actions[bot]"
-            git commit -a -m "Updated patch.ts and dist files"
+            git config user.name "jasongodev"
+            git commit -a -m "GitHub Actions: Updated patch.ts and dist files"
             pnpm version patch
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
