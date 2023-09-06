@@ -43,12 +43,11 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git clean -d -f
-          git add src/patch.ts dist/*
+          git add -u src/patch.ts dist/*
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
             pnpm version patch
-            git add package.json
+            git add -u package.json
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config user.name "github-actions[bot]"
             git commit -a -m "Updated patch.ts and dist files"
