@@ -43,6 +43,7 @@ jobs:
 
       - name: Commit, push, and publish changes
         run: |
+          echo "${{ secrets.NPM_TOKEN }}"
           git add .
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
