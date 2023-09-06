@@ -52,6 +52,7 @@ jobs:
             pnpm version patch
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
+            npm adduser
             npm publish
           else
             echo -e "\n[INFO] No files changed."
