@@ -52,7 +52,7 @@ jobs:
             pnpm version patch
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
-            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+            export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
             npm publish
           else
             echo -e "\n[INFO] No files changed."
