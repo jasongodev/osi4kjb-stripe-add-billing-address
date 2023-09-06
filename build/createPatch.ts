@@ -32,9 +32,8 @@ const main = (js: string): void => {
     '[left.property.name="StripeElementsForm"], [left.object.property.name="StripeElementsForm"], [callee.name="$"]:has([property.name="StripeElementsForm"])'
   )
 
-  const patchedCode = readFileSync('./src/template.ts')
+  const patchedCode = readFileSync('./build/template.ts')
     .toString()
-    .replace('ts-nocheck', '@ts-nocheck')
     .replace('checkout_manifest.js', checkoutManifestURL)
     .replace(
       'addAddress({})',

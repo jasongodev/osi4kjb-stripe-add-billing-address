@@ -1,6 +1,6 @@
 {
   "name": "osi4kjb-stripe-address-fix",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "Jason Go",
   "license": "Apache-2.0",
@@ -12,9 +12,9 @@
   "scripts": {
     "lint": "ts-standard",
     "format": "prettier --ignore-path src/patch.ts --check src/**",
-    "prepare:patch": "tsx createPatch.ts",
-    "prepare:dist": "rimraf ./dist",
-    "build": "run-p lint format prepare:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saf.min.js"
+    "build:patch": "tsx build/createPatch.ts",
+    "build:reset": "rimraf ./dist",
+    "build": "run-p lint format build:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saf.min.js"
   },
   "devDependencies": {
     "@types/escodegen": "^0.0.7",
