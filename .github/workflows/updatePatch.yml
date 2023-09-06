@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: 'https://registry.npmjs.org'
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
@@ -52,10 +53,9 @@ jobs:
             pnpm version patch
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
-            npm adduser
             npm publish
           else
             echo -e "\n[INFO] No files changed."
           fi
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
