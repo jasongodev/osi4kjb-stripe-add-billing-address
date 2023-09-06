@@ -41,7 +41,7 @@ jobs:
       - name: Build package
         run: pnpm build
 
-      - name: Commit, push changes, and publish
+      - name: Commit and push changes
         run: |
           git add .
           FILES_CHANGED=$(git diff --staged --name-status)
@@ -52,8 +52,12 @@ jobs:
             pnpm version patch
             git push origin
             echo -e "\n[INFO] Files changed:\n${FILES_CHANGED}"
-            export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
-            npm publish
           else
             echo -e "\n[INFO] No files changed."
           fi
+
+      - name: Publish to NPM
+        run: |
+          npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
