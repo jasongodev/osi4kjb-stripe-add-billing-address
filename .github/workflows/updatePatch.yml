@@ -43,6 +43,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          git clean -d -f
           git add src/patch.ts dist/*
           FILES_CHANGED=$(git diff --staged --name-status)
           if [[ -n ${FILES_CHANGED} ]]; then
