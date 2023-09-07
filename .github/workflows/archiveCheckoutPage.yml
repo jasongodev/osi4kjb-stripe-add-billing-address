@@ -1,0 +1,15 @@
+name: Archive Checkout Page
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  archive-checkout-page:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Save to Web Archive
+        shell: bash
+        run: curl -I https://web.archive.org/save/$KJB_CHECKOUT_URL
+        env:
+          KJB_CHECKOUT_URL: ${{ secrets.KJB_CHECKOUT_URL }}
