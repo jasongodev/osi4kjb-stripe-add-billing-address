@@ -1,11 +1,10 @@
 {
-  "name": "osi4kjb-stripe-address-fix",
-  "version": "0.0.15",
+  "name": "osi4kjb-stripe-add-billing-address",
+  "version": "0.0.1",
   "description": "",
   "author": "Jason Go",
   "license": "Apache-2.0",
   "type": "module",
-  "source": "src/index.ts",
   "module": "dist/saf.min.js",
   "main": "dist/saf.min.js",
   "browser": "dist/saf.min.js",
@@ -33,7 +32,14 @@
     "ts-standard": "^12.0.2",
     "tsx": "^3.12.8"
   },
-  "keywords": [],
+  "keywords": [
+    "kajabi",
+    "stripe",
+    "checkout",
+    "address",
+    "billing details",
+    "osi4kjb"
+  ],
   "ts-standard": {
     "ignore": [
       "node_modules/**",
