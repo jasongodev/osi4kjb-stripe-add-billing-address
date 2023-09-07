@@ -23,7 +23,8 @@ const config = Object.assign(
   {
     enabledOffers: '',
     disabledOffers: ''
-  }, document.currentScript?.dataset
+  },
+  document.currentScript?.dataset
 )
 
 const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''

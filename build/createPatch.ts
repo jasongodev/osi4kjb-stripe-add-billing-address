@@ -36,12 +36,13 @@ const main = (js: string): void => {
     .toString()
     .replace('checkout_manifest.js', checkoutManifestURL)
     .replace(
-      'addAddress({})',
+      '// PLACEHOLDER',
       targetASTs
         .map((ast) => generate(ast))
         .join('\n')
         .replace(/(^|\s)App./g, '$1window.App.')
         .replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: addAddress($1) }')
+        .replace(/window.location.replace\((.+?).attr\('data-return-to'\)\)/, "window.location.replace(sanitizeUrl($1.attr('data-return-to')))")
     )
   console.log('Step 4: Creating src/patch.ts')
   writeFileSync('./src/patch.ts', patchedCode)

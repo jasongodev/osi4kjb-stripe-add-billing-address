@@ -17,6 +17,7 @@
     "build": "run-p lint format build:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saf.min.js"
   },
   "devDependencies": {
+    "@braintree/sanitize-url": "^6.0.4",
     "@types/escodegen": "^0.0.7",
     "@types/esprima": "^4.0.3",
     "@types/esquery": "^1.5.0",
@@ -36,8 +37,7 @@
   "ts-standard": {
     "ignore": [
       "node_modules/**",
-      "dist/**",
-      "patch.ts"
+      "dist/**"
     ]
   },
   "prettier": {

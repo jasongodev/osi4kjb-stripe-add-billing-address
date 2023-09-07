@@ -1,8 +1,10 @@
 # Kajabi Stripe Address Fix
 [![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/osi4kjb-stripe-address-fix?color=blue&label=Downloads&logo=jsdelivr)](https://www.jsdelivr.com/package/npm/osi4kjb-stripe-address-fix)
 [![GitHub](https://img.shields.io/github/license/jasongodev/osi4kjb-stripe-address-fix?&color=blue&label=License&logo=github)](LICENSE)
+[![CodeQL](https://github.com/jasongodev/osi4kjb-stripe-address-fix/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/jasongodev/osi4kjb-stripe-address-fix/actions/workflows/github-code-scanning/codeql)
 [![Update Patch](https://github.com/jasongodev/osi4kjb-stripe-address-fix/actions/workflows/updatePatch.yml/badge.svg)](https://github.com/jasongodev/osi4kjb-stripe-address-fix/actions/workflows/updatePatch.yml)
 [![](https://img.shields.io/badge/Code%20Style-Standard-brightgreen?logo=javascript)](https://standardjs.com/)
+
 
 ## Installation
 
