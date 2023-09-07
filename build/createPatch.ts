@@ -25,7 +25,7 @@ import { readFileSync, writeFileSync } from 'fs'
 let checkoutManifestURL = ''
 
 const main = (js: string): void => {
-  console.log('Step 3: Parsing downloaded checkout_manifest.js')
+  console.log('Step 3: Parsing downloaded checkout_manifest-*.js')
   // Get all the related ASTs
   const targetASTs = esquery(
     parseScript(js),
@@ -50,20 +50,12 @@ const main = (js: string): void => {
 }
 
 try {
-  console.log('Step 1: Determining the latest checkout_manifest.js from the Web Archive')
-  void fetch('https://web.archive.org/web/timemap/json?url=https%3A%2F%2Fkajabi-app-assets.kajabi-cdn.com%2Fassets%2Fcheckout_manifest&matchType=prefix&collapse=urlkey&output=json&fl=original%2Ctimestamp&filter=!statuscode%3A%5B45%5D..&limit=10000')
+  console.log('========== RUNNING createPatch.ts ==========')
+  console.log('Step 1: Determining the latest checkout_manifest-*.js from the Web Archive')
+  void fetch('https://archive.org/wayback/available?url=https://kajabi-app-assets.kajabi-cdn.com/assets/checkout_manifest*&timestamp=' + new Date().toISOString().replace(/-/g, '').slice(0, 8))
     .then(async (r) => await r.json())
-    .then(timemap => {
-      let latestTimestamp = 0
-
-      for (let i = 1; i < timemap.length; i++) {
-        const timestamp = parseInt(timemap[i][1], 10)
-        if (!isNaN(timestamp) && timestamp > latestTimestamp) {
-          latestTimestamp = timestamp
-          checkoutManifestURL = timemap[i][0]
-        }
-      }
-
+    .then(metadata => {
+      checkoutManifestURL = metadata.archived_snapshots?.closest?.url?.match('https://kajabi.+')[0] ?? ''
       if (checkoutManifestURL !== '') {
         console.log('Step 2: Downloading ' + checkoutManifestURL)
         void fetch(checkoutManifestURL)
