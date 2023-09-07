@@ -5,15 +5,15 @@
   "author": "Jason Go",
   "license": "Apache-2.0",
   "type": "module",
-  "module": "dist/saf.min.js",
-  "main": "dist/saf.min.js",
-  "browser": "dist/saf.min.js",
+  "module": "dist/saba.min.js",
+  "main": "dist/saba.min.js",
+  "browser": "dist/saba.min.js",
   "scripts": {
     "lint": "ts-standard",
     "format": "prettier --ignore-path src/patch.ts --check src/**",
     "build:patch": "tsx build/createPatch.ts",
     "build:reset": "rimraf ./dist",
-    "build": "run-p lint format build:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saf.min.js"
+    "build": "run-p lint format build:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js"
   },
   "devDependencies": {
     "@braintree/sanitize-url": "^6.0.4",
