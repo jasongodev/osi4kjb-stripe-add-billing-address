@@ -34,7 +34,7 @@ const main = (js: string): void => {
 
   const patchedCode = readFileSync('./build/template.ts')
     .toString()
-    .replace('checkout_manifest.js', checkoutManifestURL)
+    .replace('checkout_manifest-*.js', checkoutManifestURL)
     .replace(
       '// PLACEHOLDER',
       targetASTs
@@ -42,6 +42,10 @@ const main = (js: string): void => {
         .join('\n')
         .replace(/(^|\s)App./g, '$1window.App.')
         .replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: addAddress($1) }')
+
+        // Fix vulnerability from Kajabi code
+        // See details here: https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/security/code-scanning/1
+        // See fix here: https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/commit/ac801cd8d832c359c752003e7a4edeb44dd23c59#diff-1d0c51a44f1fcd560eaa6e29ad4adfd6d680e657c62e8fffdb746f69acb2c301
         .replace(/window.location.replace\((.+?).attr\('data-return-to'\)\)/, "window.location.replace(sanitizeUrl($1.attr('data-return-to')))")
     )
   console.log('Step 4: Creating src/patch.ts')

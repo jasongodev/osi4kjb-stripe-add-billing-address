@@ -31,7 +31,7 @@ import { sanitizeUrl } from '@braintree/sanitize-url'
 
 export const patchedCode = (): void => {
   /*! ========== KAJABI CODE STARTS HERE. COPYRIGHT BY KAJABI. ALL RIGHTS RESERVED. ========== */
-  /*! Derived from checkout_manifest.js */
+  /*! Derived from checkout_manifest-*.js */
   // PLACEHOLDER
   /*! ========== KAJABI CODE ENDS HERE. COPYRIGHT BY KAJABI. ALL RIGHTS RESERVED. ========== */
 }
