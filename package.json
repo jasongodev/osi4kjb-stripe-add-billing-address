@@ -1,22 +1,32 @@
 {
   "name": "osi4kjb-stripe-add-billing-address",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "author": "Jason Go",
   "license": "Apache-2.0",
   "type": "module",
-  "module": "dist/saba.min.js",
-  "main": "dist/saba.min.js",
+  "module": "dist/saba.mjs",
+  "main": "dist/saba.mjs",
   "browser": "dist/saba.min.js",
+  "jsdelivr": "dist/saba.min.js",
+  "unpkg": "dist/saba.min.js",
+  "exports": {
+    "import": "./dist/saba.mjs",
+    "default": "./dist/saba.mjs"
+  },
   "scripts": {
     "lint": "ts-standard",
     "format": "prettier --ignore-path src/patch.ts --check src/**",
     "build:patch": "tsx build/createPatch.ts",
     "build:reset": "rimraf ./dist",
-    "build": "run-p lint format build:* && esbuild src/index.ts --bundle --minify --sourcemap --legal-comments=inline --banner:js='/* Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js"
+    "build:esm": "esbuild src/index.ts --bundle --packages=external --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=esm --outfile=dist/saba.mjs",
+    "build:iife": "esbuild src/iife.ts --bundle --minify --sourcemap=linked --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js",
+    "build": "run-p build:patch build:reset && run-p build:esm build:iife"
+  },
+  "dependencies": {
+    "@braintree/sanitize-url": "^6.0.4"
   },
   "devDependencies": {
-    "@braintree/sanitize-url": "^6.0.4",
     "@types/escodegen": "^0.0.7",
     "@types/esprima": "^4.0.3",
     "@types/esquery": "^1.5.0",

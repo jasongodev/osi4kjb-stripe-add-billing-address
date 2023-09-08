@@ -29,24 +29,15 @@ const config = Object.assign(
 
 const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''
 
-if (
-  // Is a checkout page
-  offerSlug !== '' &&
-
-  // And not included in disabled offers
-  !config.disabledOffers.split(/\s*[,|]\s*/).includes(offerSlug) &&
-
-  // And either...
-  (
-    // All offers are enabled
-    config.enabledOffers === '' ||
-
-    // Or included in enabled offers
-    (config.enabledOffers !== '' && config.enabledOffers.split(/\s*[,|]\s*/).includes(offerSlug))
-  )
-) {
-  // Then...
-  // When dom is ready...
+export const stripeAddBillingAddress = (): void => {
+  if (
+    // Not a checkout page
+    offerSlug === '' ||
+    // Or included in disabled offers
+    config.disabledOffers.split(/\s*[,|]\s*/).includes(offerSlug) ||
+    // Or not included in enabled offers
+    (config.enabledOffers !== '' && !config.enabledOffers.split(/\s*[,|]\s*/).includes(offerSlug))
+  ) { return }
   domReady(
     // Run the patched code
     patchedCode,
