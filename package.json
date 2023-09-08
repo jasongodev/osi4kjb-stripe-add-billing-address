@@ -12,7 +12,8 @@
   "unpkg": "dist/saba.min.js",
   "exports": {
     "import": "./dist/saba.mjs",
-    "default": "./dist/saba.mjs"
+    "default": "./dist/saba.mjs",
+    "types": "./dist/saba.d.ts"
   },
   "scripts": {
     "lint": "ts-standard",
@@ -21,7 +22,8 @@
     "build:reset": "rimraf ./dist",
     "build:esm": "esbuild src/index.ts --bundle --packages=external --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=esm --outfile=dist/saba.mjs",
     "build:iife": "esbuild src/iife.ts --bundle --minify --sourcemap=linked --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js",
-    "build": "run-p build:patch build:reset && run-p build:esm build:iife"
+    "build": "run-p build:patch build:reset && run-p build:esm build:iife",
+    "build:types": "tsc dist/saba.mjs --allowJs --target esnext --emitDeclarationOnly --declaration --outfile dist/saba.d.ts"
   },
   "dependencies": {
     "@braintree/sanitize-url": "^6.0.4"
@@ -40,7 +42,8 @@
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
     "ts-standard": "^12.0.2",
-    "tsx": "^3.12.8"
+    "tsx": "^3.12.8",
+    "typescript": "^5.2.2"
   },
   "keywords": [
     "kajabi",
