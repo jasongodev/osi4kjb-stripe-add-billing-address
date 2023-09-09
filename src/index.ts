@@ -16,8 +16,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { domReady } from './utils'
-import { patchedCode } from './patch'
+/* eslint-disable @typescript-eslint/no-implied-eval */
+/* eslint-disable no-new-func */
+
+import { domReady, CustomWindow } from './utils'
+import { addAddress } from './addAddress'
+
+declare const window: CustomWindow
+addAddress({})
 
 const config = Object.assign(
   {
@@ -29,6 +35,18 @@ const config = Object.assign(
 
 const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''
 
+const patch = (): void => {
+  let serializedConstructor: string = window.App.StripeElementsForm.toString()
+  const serializedBindTo: string = window.App.StripeElementsForm.bindTo.toString()
+
+  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: addAddress($1) }')
+
+  window.App.StripeElementsForm = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
+  window.App.StripeElementsForm.bindTo = new Function('e', `(${serializedBindTo})(e)`)
+
+  document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => window.App.StripeElementsForm.bindTo(el))
+}
+
 export const stripeAddBillingAddress = (): void => {
   if (
     // Not a checkout page
@@ -37,10 +55,12 @@ export const stripeAddBillingAddress = (): void => {
     config.disabledOffers.split(/\s*[,|]\s*/).includes(offerSlug) ||
     // Or not included in enabled offers
     (config.enabledOffers !== '' && !config.enabledOffers.split(/\s*[,|]\s*/).includes(offerSlug))
-  ) { return }
+  ) {
+    return
+  }
   domReady(
     // Run the patched code
-    patchedCode,
+    patch,
     // But limit waiting for 10 seconds...
     10000,
     // For these objects to exist before running the patched code

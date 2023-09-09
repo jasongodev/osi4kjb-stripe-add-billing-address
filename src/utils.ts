@@ -42,3 +42,7 @@ export const $ = <T extends keyof HTMLElementTagNameMap | string>(
 ): T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] | null : HTMLElement | null => {
   return document.querySelector(s) as T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : HTMLElement | null
 }
+
+export interface CustomWindow extends Window {
+  App: any
+}

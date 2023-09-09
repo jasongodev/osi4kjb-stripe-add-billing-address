@@ -19,31 +19,21 @@
   "scripts": {
     "lint": "ts-standard",
     "format": "prettier --ignore-path src/patch.ts --check src/**",
-    "build:patch": "tsx build/createPatch.ts",
+    "patch": "tsx build/createPatch.ts",
     "build:reset": "rimraf ./dist",
     "build:esm": "esbuild src/index.ts --bundle --packages=external --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=esm --outfile=dist/saba.mjs",
     "build:iife": "esbuild src/iife.ts --bundle --minify --sourcemap=linked --legal-comments=inline --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js",
-    "build": "run-p build:patch build:reset && run-p build:esm build:iife"
+    "build": "run-p lint format build:reset && run-p build:esm build:iife"
   },
   "dependencies": {
     "@braintree/sanitize-url": "^6.0.4"
   },
   "devDependencies": {
-    "@types/escodegen": "^0.0.7",
-    "@types/esprima": "^4.0.3",
-    "@types/esquery": "^1.5.0",
-    "@types/node": "^20.5.9",
-    "cross-fetch": "^4.0.0",
     "esbuild": "^0.19.2",
-    "escodegen": "^2.1.0",
-    "esprima": "^4.0.1",
-    "esquery": "^1.5.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
-    "ts-standard": "^12.0.2",
-    "tsx": "^3.12.8",
-    "typescript": "^5.2.2"
+    "ts-standard": "^12.0.2"
   },
   "keywords": [
     "kajabi",
@@ -56,7 +46,8 @@
   "ts-standard": {
     "ignore": [
       "node_modules/**",
-      "dist/**"
+      "dist/**",
+      "*.d.ts"
     ]
   },
   "prettier": {
