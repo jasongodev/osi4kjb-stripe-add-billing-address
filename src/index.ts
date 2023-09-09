@@ -25,18 +25,18 @@ import { addAddress } from './addAddress'
 declare const window: CustomWindow
 
 const patch = (): void => {
-  const bindTo = window.App.StripeElementsForm.bindTo
-  const prototype = window.App.StripeElementsForm.prototype
+  const originalConstructor = window.App.StripeElementsForm
 
-  let serializedConstructor: string = window.App.StripeElementsForm.toString()
+  let serializedConstructor: string = originalConstructor.toString()
   serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: App.StripeElementsForm.addAddress($1) }')
 
-  window.App.StripeElementsForm = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
-  window.App.StripeElementsForm.bindTo = bindTo
-  window.App.StripeElementsForm.prototype = prototype
-  window.App.StripeElementsForm.addAddress = addAddress
+  const newConstructor = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
+  newConstructor.bindTo = originalConstructor.bindTo
+  newConstructor.prototype = originalConstructor.prototype
+  newConstructor.addAddress = addAddress
+  window.App.StripeElementsForm = newConstructor
 
-  document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => window.App.StripeElementsForm.bindTo(el))
+  document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => newConstructor.bindTo(el))
 }
 
 export const stripeAddBillingAddress = (): void => {

@@ -36,15 +36,15 @@ var addAddress = (billingDetails) => {
 
 // src/index.ts
 var patch = () => {
-  const bindTo = window.App.StripeElementsForm.bindTo;
-  const prototype = window.App.StripeElementsForm.prototype;
-  let serializedConstructor = window.App.StripeElementsForm.toString();
+  const originalConstructor = window.App.StripeElementsForm;
+  let serializedConstructor = originalConstructor.toString();
   serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details: App.StripeElementsForm.addAddress($1) }");
-  window.App.StripeElementsForm = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
-  window.App.StripeElementsForm.bindTo = bindTo;
-  window.App.StripeElementsForm.prototype = prototype;
-  window.App.StripeElementsForm.addAddress = addAddress;
-  document.querySelectorAll("[data-stripe-elements-form]").forEach((el) => window.App.StripeElementsForm.bindTo(el));
+  const newConstructor = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
+  newConstructor.bindTo = originalConstructor.bindTo;
+  newConstructor.prototype = originalConstructor.prototype;
+  newConstructor.addAddress = addAddress;
+  window.App.StripeElementsForm = newConstructor;
+  document.querySelectorAll("[data-stripe-elements-form]").forEach((el) => newConstructor.bindTo(el));
 };
 var stripeAddBillingAddress = () => {
   var _a, _b, _c;
