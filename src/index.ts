@@ -23,31 +23,33 @@ import { domReady, CustomWindow } from './utils'
 import { addAddress } from './addAddress'
 
 declare const window: CustomWindow
-addAddress({})
-
-const config = Object.assign(
-  {
-    enabledOffers: '',
-    disabledOffers: ''
-  },
-  document.currentScript?.dataset
-)
-
-const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''
 
 const patch = (): void => {
-  let serializedConstructor: string = window.App.StripeElementsForm.toString()
-  const serializedBindTo: string = window.App.StripeElementsForm.bindTo.toString()
+  const bindTo = window.App.StripeElementsForm.bindTo
+  const prototype = window.App.StripeElementsForm.prototype
 
-  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: addAddress($1) }')
+  let serializedConstructor: string = window.App.StripeElementsForm.toString()
+  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: App.StripeElementsForm.addAddress($1) }')
 
   window.App.StripeElementsForm = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
-  window.App.StripeElementsForm.bindTo = new Function('e', `(${serializedBindTo})(e)`)
+  window.App.StripeElementsForm.bindTo = bindTo
+  window.App.StripeElementsForm.prototype = prototype
+  window.App.StripeElementsForm.addAddress = addAddress
 
   document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => window.App.StripeElementsForm.bindTo(el))
 }
 
 export const stripeAddBillingAddress = (): void => {
+  const config = Object.assign(
+    {
+      enabledOffers: '',
+      disabledOffers: ''
+    },
+    document.currentScript?.dataset
+  )
+
+  const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''
+
   if (
     // Not a checkout page
     offerSlug === '' ||
@@ -58,6 +60,7 @@ export const stripeAddBillingAddress = (): void => {
   ) {
     return
   }
+
   domReady(
     // Run the patched code
     patch,

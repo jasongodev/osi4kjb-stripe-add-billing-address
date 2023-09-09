@@ -22,39 +22,40 @@ var $ = (s) => {
 
 // src/addAddress.ts
 var addAddress = (billingDetails) => {
-  var _a3, _b2;
+  var _a, _b;
   billingDetails.address = {
     postal_code: $("#checkout_offer_extra_contact_information_address_zip").value,
     city: $("#checkout_offer_extra_contact_information_address_city").value,
     country: $("#input-address-country").value,
     line1: $("#checkout_offer_extra_contact_information_address_line_1").value,
     line2: $("#checkout_offer_extra_contact_information_address_line_2").value === "" ? $("#checkout_offer_extra_contact_information_address_line_1").value : $("#checkout_offer_extra_contact_information_address_line_2").value,
-    state: (_b2 = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _b2.options[(_a3 = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _a3.selectedIndex].text
+    state: (_b = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _b.options[(_a = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _a.selectedIndex].text
   };
   return billingDetails;
 };
 
 // src/index.ts
-addAddress({});
-var _a;
-var config = Object.assign(
-  {
-    enabledOffers: "",
-    disabledOffers: ""
-  },
-  (_a = document.currentScript) == null ? void 0 : _a.dataset
-);
-var _a2, _b;
-var offerSlug = (_b = (_a2 = window.location.href.match(/\/offers\/(.{8})/)) == null ? void 0 : _a2[1]) != null ? _b : "";
 var patch = () => {
+  const bindTo = window.App.StripeElementsForm.bindTo;
+  const prototype = window.App.StripeElementsForm.prototype;
   let serializedConstructor = window.App.StripeElementsForm.toString();
-  const serializedBindTo = window.App.StripeElementsForm.bindTo.toString();
-  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details: addAddress($1) }");
+  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details: App.StripeElementsForm.addAddress($1) }");
   window.App.StripeElementsForm = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
-  window.App.StripeElementsForm.bindTo = new Function("e", `(${serializedBindTo})(e)`);
+  window.App.StripeElementsForm.bindTo = bindTo;
+  window.App.StripeElementsForm.prototype = prototype;
+  window.App.StripeElementsForm.addAddress = addAddress;
   document.querySelectorAll("[data-stripe-elements-form]").forEach((el) => window.App.StripeElementsForm.bindTo(el));
 };
 var stripeAddBillingAddress = () => {
+  var _a, _b, _c;
+  const config = Object.assign(
+    {
+      enabledOffers: "",
+      disabledOffers: ""
+    },
+    (_a = document.currentScript) == null ? void 0 : _a.dataset
+  );
+  const offerSlug = (_c = (_b = window.location.href.match(/\/offers\/(.{8})/)) == null ? void 0 : _b[1]) != null ? _c : "";
   if (
     // Not a checkout page
     offerSlug === "" || // Or included in disabled offers
