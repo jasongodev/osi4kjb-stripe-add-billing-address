@@ -39,7 +39,7 @@ var addAddress = (billingDetails) => {
 var patch = () => {
   const originalConstructor = window.App.StripeElementsForm;
   let serializedConstructor = originalConstructor.toString();
-  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details: App.StripeElementsForm.addAddress($1) }");
+  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details:App.StripeElementsForm.addAddress($1)}");
   const newConstructor = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
   newConstructor.addAddress = addAddress;
   newConstructor.bindTo = originalConstructor.bindTo;

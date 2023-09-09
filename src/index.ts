@@ -28,7 +28,7 @@ const patch = (): void => {
   const originalConstructor = window.App.StripeElementsForm
 
   let serializedConstructor: string = originalConstructor.toString()
-  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: App.StripeElementsForm.addAddress($1) }')
+  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details:App.StripeElementsForm.addAddress($1)}')
 
   const newConstructor = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
   // @ts-expect-error
