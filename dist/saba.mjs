@@ -21,15 +21,16 @@ var $ = (s) => {
 };
 
 // src/addAddress.ts
+var addressStr = "#checkout_offer_extra_contact_information_address";
 var addAddress = (billingDetails) => {
   var _a, _b;
   billingDetails.address = {
-    postal_code: $("#checkout_offer_extra_contact_information_address_zip").value,
-    city: $("#checkout_offer_extra_contact_information_address_city").value,
+    postal_code: $(addressStr + "_zip").value,
+    city: $(addressStr + "_city").value,
     country: $("#input-address-country").value,
-    line1: $("#checkout_offer_extra_contact_information_address_line_1").value,
-    line2: $("#checkout_offer_extra_contact_information_address_line_2").value === "" ? $("#checkout_offer_extra_contact_information_address_line_1").value : $("#checkout_offer_extra_contact_information_address_line_2").value,
-    state: (_b = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _b.options[(_a = $("#checkout_offer_extra_contact_information_address_state")) == null ? void 0 : _a.selectedIndex].text
+    line1: $(addressStr + "_line_1").value,
+    line2: $(addressStr + "_line_2").value === "" ? $(addressStr + "_line_1").value : $(addressStr + "_line_2").value,
+    state: (_b = $(addressStr + "_state")) == null ? void 0 : _b.options[(_a = $(addressStr + "_state")) == null ? void 0 : _a.selectedIndex].text
   };
   return billingDetails;
 };
@@ -40,9 +41,9 @@ var patch = () => {
   let serializedConstructor = originalConstructor.toString();
   serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, "billing_details: App.StripeElementsForm.addAddress($1) }");
   const newConstructor = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
+  newConstructor.addAddress = addAddress;
   newConstructor.bindTo = originalConstructor.bindTo;
   newConstructor.prototype = originalConstructor.prototype;
-  newConstructor.addAddress = addAddress;
   window.App.StripeElementsForm = newConstructor;
   document.querySelectorAll("[data-stripe-elements-form]").forEach((el) => newConstructor.bindTo(el));
 };
@@ -72,7 +73,7 @@ var stripeAddBillingAddress = () => {
     // For these objects to exist before running the patched code
     ["$", "App", "Stripe"],
     // And run only when address fields are present
-    ["#checkout_offer_extra_contact_information_address_zip"]
+    [addressStr + "_zip"]
   );
 };
 export {

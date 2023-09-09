@@ -20,7 +20,7 @@
 /* eslint-disable no-new-func */
 
 import { domReady, CustomWindow } from './utils'
-import { addAddress } from './addAddress'
+import { addAddress, addressStr } from './addAddress'
 
 declare const window: CustomWindow
 
@@ -31,11 +31,14 @@ const patch = (): void => {
   serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details: App.StripeElementsForm.addAddress($1) }')
 
   const newConstructor = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
+  // @ts-expect-error
+  newConstructor.addAddress = addAddress
+  // @ts-expect-error
   newConstructor.bindTo = originalConstructor.bindTo
   newConstructor.prototype = originalConstructor.prototype
-  newConstructor.addAddress = addAddress
   window.App.StripeElementsForm = newConstructor
 
+  // @ts-expect-error
   document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => newConstructor.bindTo(el))
 }
 
@@ -69,6 +72,6 @@ export const stripeAddBillingAddress = (): void => {
     // For these objects to exist before running the patched code
     ['$', 'App', 'Stripe'],
     // And run only when address fields are present
-    ['#checkout_offer_extra_contact_information_address_zip']
+    [addressStr + '_zip']
   )
 }

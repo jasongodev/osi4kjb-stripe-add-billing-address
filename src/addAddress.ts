@@ -18,19 +18,19 @@
 
 import { $ } from './utils'
 
+export const addressStr = '#checkout_offer_extra_contact_information_address'
+
 export const addAddress = (billingDetails: Record<string, any>): Record<string, any> => {
   billingDetails.address = {
-    postal_code: ($('#checkout_offer_extra_contact_information_address_zip') as HTMLInputElement).value,
-    city: ($('#checkout_offer_extra_contact_information_address_city') as HTMLInputElement).value,
+    postal_code: ($(addressStr + '_zip') as HTMLInputElement).value,
+    city: ($(addressStr + '_city') as HTMLInputElement).value,
     country: ($('#input-address-country') as HTMLInputElement).value,
-    line1: ($('#checkout_offer_extra_contact_information_address_line_1') as HTMLInputElement).value,
+    line1: ($(addressStr + '_line_1') as HTMLInputElement).value,
     line2:
-      ($('#checkout_offer_extra_contact_information_address_line_2') as HTMLInputElement).value === ''
-        ? ($('#checkout_offer_extra_contact_information_address_line_1') as HTMLInputElement).value
-        : ($('#checkout_offer_extra_contact_information_address_line_2') as HTMLInputElement).value,
-    state: ($('#checkout_offer_extra_contact_information_address_state') as HTMLSelectElement)?.options[
-      ($('#checkout_offer_extra_contact_information_address_state') as HTMLSelectElement)?.selectedIndex
-    ].text
+      ($(addressStr + '_line_2') as HTMLInputElement).value === ''
+        ? ($(addressStr + '_line_1') as HTMLInputElement).value
+        : ($(addressStr + '_line_2') as HTMLInputElement).value,
+    state: ($(addressStr + '_state') as HTMLSelectElement)?.options[($(addressStr + '_state') as HTMLSelectElement)?.selectedIndex].text
   }
   return billingDetails
 }
