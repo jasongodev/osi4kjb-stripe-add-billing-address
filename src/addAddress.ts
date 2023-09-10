@@ -21,15 +21,16 @@ import { $ } from './utils'
 export const addressStr = '#checkout_offer_extra_contact_information_address'
 
 export const addAddress = (billingDetails: Record<string, any>): Record<string, any> => {
+  const value = 'value'
   billingDetails.address = {
-    postal_code: ($(addressStr + '_zip') as HTMLInputElement).value,
-    city: ($(addressStr + '_city') as HTMLInputElement).value,
-    country: ($('#input-address-country') as HTMLInputElement).value,
-    line1: ($(addressStr + '_line_1') as HTMLInputElement).value,
+    postal_code: ($(addressStr + '_zip') as HTMLInputElement)[value],
+    city: ($(addressStr + '_city') as HTMLInputElement)[value],
+    country: ($('#input-address-country') as HTMLInputElement)[value],
+    line1: ($(addressStr + '_line_1') as HTMLInputElement)[value],
     line2:
-      ($(addressStr + '_line_2') as HTMLInputElement).value === ''
-        ? ($(addressStr + '_line_1') as HTMLInputElement).value
-        : ($(addressStr + '_line_2') as HTMLInputElement).value,
+      ($(addressStr + '_line_2') as HTMLInputElement)[value] === ''
+        ? ($(addressStr + '_line_1') as HTMLInputElement)[value]
+        : ($(addressStr + '_line_2') as HTMLInputElement)[value],
     state: ($(addressStr + '_state') as HTMLSelectElement)?.options[($(addressStr + '_state') as HTMLSelectElement)?.selectedIndex].text
   }
   return billingDetails

@@ -19,47 +19,50 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable no-new-func */
 
-import { domReady, CustomWindow } from './utils'
+import { domReady, CustomWindow, doc } from './utils'
 import { addAddress, addressStr } from './addAddress'
 
 declare const window: CustomWindow
 
-const patch = (): void => {
-  const originalConstructor = window.App.StripeElementsForm
+const patch = (app = window.App): void => {
+  const originalConstructor = app.StripeElementsForm
 
   let serializedConstructor: string = originalConstructor.toString()
-  serializedConstructor = serializedConstructor.replace(/billing_details\s*:\s*(.+?)\s*}/g, 'billing_details:App.StripeElementsForm.addAddress($1)}')
+  serializedConstructor = serializedConstructor.replace(/{\s*b(.+?)s\s*:\s*(.+?)\s*}/g, '{b$1s:App.SABA($2)}')
 
   const newConstructor = new Function('f', 's', 'o', `(${serializedConstructor})(f,s,o)`)
-  // @ts-expect-error
-  newConstructor.addAddress = addAddress
+
   // @ts-expect-error
   newConstructor.bindTo = originalConstructor.bindTo
   newConstructor.prototype = originalConstructor.prototype
-  window.App.StripeElementsForm = newConstructor
+  app.StripeElementsForm = newConstructor
+  app.SABA = addAddress
 
   // @ts-expect-error
-  document.querySelectorAll('[data-stripe-elements-form]').forEach((el) => newConstructor.bindTo(el))
+  doc.querySelectorAll('[data-stripe-elements-form]').forEach((el) => newConstructor.bindTo(el))
 }
 
 export const stripeAddBillingAddress = (): void => {
+  const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1]
+  const separator = /\s*[,|]\s*/
+  const enabledOffers = 'enabledOffers'
+  const disabledOffers = 'disabledOffers'
+
   const config = Object.assign(
     {
-      enabledOffers: '',
-      disabledOffers: ''
+      [enabledOffers]: '',
+      [disabledOffers]: ''
     },
-    document.currentScript?.dataset
+    doc.currentScript?.dataset
   )
-
-  const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1] ?? ''
 
   if (
     // Not a checkout page
-    offerSlug === '' ||
+    offerSlug === undefined ||
     // Or included in disabled offers
-    config.disabledOffers.split(/\s*[,|]\s*/).includes(offerSlug) ||
+    config[disabledOffers].split(separator).includes(offerSlug) ||
     // Or not included in enabled offers
-    (config.enabledOffers !== '' && !config.enabledOffers.split(/\s*[,|]\s*/).includes(offerSlug))
+    (config[enabledOffers] !== '' && !config[enabledOffers].split(separator).includes(offerSlug))
   ) {
     return
   }

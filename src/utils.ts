@@ -16,17 +16,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+export const doc = document
+
+export const $ = <T extends keyof HTMLElementTagNameMap | string>(
+  s: T
+): T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] | null : HTMLElement | null => {
+  return doc.querySelector(s) as T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : HTMLElement | null
+}
+
 export const domReady = (callback: Function, wait: number = 120000, objects: string[] = [], selectors: string[] = []): void => {
   const ctrl = setTimeout(() => {
     checkReady = () => {}
   }, wait)
 
   let checkReady = (): void => {
-    if (
-      document.readyState.length > 7 &&
-      objects.every((key) => Object.hasOwn(window, key)) &&
-      selectors.every((selector) => document.querySelector(selector))
-    ) {
+    if (doc.readyState.length > 7 && objects.every((key) => Object.hasOwn(window, key)) && selectors.every((selector) => $(selector))) {
       clearInterval(ctrl)
       callback()
     } else {
@@ -35,12 +39,6 @@ export const domReady = (callback: Function, wait: number = 120000, objects: str
   }
 
   checkReady()
-}
-
-export const $ = <T extends keyof HTMLElementTagNameMap | string>(
-  s: T
-): T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] | null : HTMLElement | null => {
-  return document.querySelector(s) as T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : HTMLElement | null
 }
 
 export interface CustomWindow extends Window {
