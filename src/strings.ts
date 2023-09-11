@@ -17,5 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { stripeAddBillingAddress } from '.'
-stripeAddBillingAddress()
+export const separator = /\s*[,|]\s*/
+export const enabledOffersKey = 'enabledOffers'
+export const disabledOffersKey = 'disabledOffers'
+export const addressStr = '#checkout_offer_extra_contact_information_address_'
+export const inputCountryId = '#input-address-country'
+export const lineStr = 'line_'
+export const valueKey = 'value'

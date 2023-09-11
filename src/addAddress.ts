@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2023 Jason Go
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,21 +18,19 @@
  */
 
 import { $ } from './utils'
-
-export const addressStr = '#checkout_offer_extra_contact_information_address'
+import { addressStr, lineStr, valueKey, inputCountryId } from './strings'
 
 export const addAddress = (billingDetails: Record<string, any>): Record<string, any> => {
-  const value = 'value'
   billingDetails.address = {
-    postal_code: ($(addressStr + '_zip') as HTMLInputElement)[value],
-    city: ($(addressStr + '_city') as HTMLInputElement)[value],
-    country: ($('#input-address-country') as HTMLInputElement)[value],
-    line1: ($(addressStr + '_line_1') as HTMLInputElement)[value],
+    postal_code: ($(addressStr + 'zip') as HTMLInputElement)[valueKey],
+    city: ($(addressStr + 'city') as HTMLInputElement)[valueKey],
+    country: ($(inputCountryId) as HTMLInputElement)[valueKey],
+    line1: ($(addressStr + lineStr + '1') as HTMLInputElement)[valueKey],
     line2:
-      ($(addressStr + '_line_2') as HTMLInputElement)[value] === ''
-        ? ($(addressStr + '_line_1') as HTMLInputElement)[value]
-        : ($(addressStr + '_line_2') as HTMLInputElement)[value],
-    state: ($(addressStr + '_state') as HTMLSelectElement)?.options[($(addressStr + '_state') as HTMLSelectElement)?.selectedIndex].text
+      ($(addressStr + lineStr + '2') as HTMLInputElement)[valueKey] === ''
+        ? ($(addressStr + lineStr + '1') as HTMLInputElement)[valueKey]
+        : ($(addressStr + lineStr + '2') as HTMLInputElement)[valueKey],
+    state: ($(addressStr + 'state') as HTMLSelectElement)?.options[($(addressStr + 'state') as HTMLSelectElement)?.selectedIndex].text
   }
   return billingDetails
 }

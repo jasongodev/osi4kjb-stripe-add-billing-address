@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2023 Jason Go
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +20,12 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable no-new-func */
 
-import { domReady, CustomWindow, doc } from './utils'
-import { addAddress, addressStr } from './addAddress'
+import { win, doc, domReady } from './utils'
+import { addAddress } from './addAddress'
+import { enabledOffersKey, disabledOffersKey, separator, inputCountryId } from './strings'
 
-declare const window: CustomWindow
-
-const patch = (app = window.App): void => {
+const patch = (): void => {
+  const app = win.App
   const originalConstructor = app.StripeElementsForm
 
   let serializedConstructor: string = originalConstructor.toString()
@@ -43,15 +44,12 @@ const patch = (app = window.App): void => {
 }
 
 export const stripeAddBillingAddress = (): void => {
-  const offerSlug = window.location.href.match(/\/offers\/(.{8})/)?.[1]
-  const separator = /\s*[,|]\s*/
-  const enabledOffers = 'enabledOffers'
-  const disabledOffers = 'disabledOffers'
+  const offerSlug = win.location.href.match(/\/offers\/(.{8})/)?.[1]
 
   const config = Object.assign(
     {
-      [enabledOffers]: '',
-      [disabledOffers]: ''
+      [enabledOffersKey]: '',
+      [disabledOffersKey]: ''
     },
     doc.currentScript?.dataset
   )
@@ -60,21 +58,21 @@ export const stripeAddBillingAddress = (): void => {
     // Not a checkout page
     offerSlug === undefined ||
     // Or included in disabled offers
-    config[disabledOffers].split(separator).includes(offerSlug) ||
+    config[disabledOffersKey].split(separator).includes(offerSlug) ||
     // Or not included in enabled offers
-    (config[enabledOffers] !== '' && !config[enabledOffers].split(separator).includes(offerSlug))
+    (config[enabledOffersKey] !== '' && !config[enabledOffersKey].split(separator).includes(offerSlug))
   ) {
     return
   }
 
   domReady(
-    // Run the patched code
+    // Run the patch
     patch,
-    // But limit waiting for 10 seconds...
+    // And limit waiting for 10 seconds...
     10000,
-    // For these objects to exist before running the patched code
+    // For these objects to exist before running the patch
     ['$', 'App', 'Stripe'],
     // And run only when address fields are present
-    [addressStr + '_zip']
+    [inputCountryId]
   )
 }

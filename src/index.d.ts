@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2023 Jason Go
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,4 +17,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * Add the billing address details when Kajabi checkout form submits data to Stripe.
+ *
+ * @returns {void}
+ *
+ * @example
+ * stripeAddBillingAddress()
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ *
+ * @see {@link https://github.com/jasongodev/osi4kjb-stripe-add-billing-address}
+ *
+ */
 export declare const stripeAddBillingAddress: () => void

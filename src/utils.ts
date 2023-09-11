@@ -1,4 +1,5 @@
 /**
+ * @license
  * Copyright 2023 Jason Go
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +17,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+type QueryElement<T extends keyof HTMLElementTagNameMap | string> = T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : HTMLElement
+
+interface CustomWindow extends Window {
+  App?: any
+}
+
+export const win: CustomWindow = window
+
 export const doc = document
 
-export const $ = <T extends keyof HTMLElementTagNameMap | string>(
-  s: T
-): T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] | null : HTMLElement | null => {
-  return doc.querySelector(s) as T extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[T] : HTMLElement | null
+export const $$ = <QueryString extends string>(s: QueryString): NodeListOf<QueryElement<QueryString>> => {
+  return doc.querySelectorAll(s)
+}
+
+export const $ = <QueryString extends string>(s: QueryString): QueryElement<QueryString> | null => {
+  return doc.querySelector(s)
 }
 
 export const domReady = (callback: Function, wait: number = 120000, objects: string[] = [], selectors: string[] = []): void => {
@@ -39,8 +50,4 @@ export const domReady = (callback: Function, wait: number = 120000, objects: str
   }
 
   checkReady()
-}
-
-export interface CustomWindow extends Window {
-  App: any
 }

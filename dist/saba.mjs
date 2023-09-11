@@ -1,6 +1,7 @@
 /*! Copyright 2023 Jason Go - Apache-2.0 */
 
 // src/utils.ts
+var win = window;
 var doc = document;
 var $ = (s) => {
   return doc.querySelector(s);
@@ -21,24 +22,32 @@ var domReady = (callback, wait = 12e4, objects = [], selectors = []) => {
   checkReady();
 };
 
+// src/strings.ts
+var separator = /\s*[,|]\s*/;
+var enabledOffersKey = "enabledOffers";
+var disabledOffersKey = "disabledOffers";
+var addressStr = "#checkout_offer_extra_contact_information_address_";
+var inputCountryId = "#input-address-country";
+var lineStr = "line_";
+var valueKey = "value";
+
 // src/addAddress.ts
-var addressStr = "#checkout_offer_extra_contact_information_address";
 var addAddress = (billingDetails) => {
   var _a, _b;
-  const value = "value";
   billingDetails.address = {
-    postal_code: $(addressStr + "_zip")[value],
-    city: $(addressStr + "_city")[value],
-    country: $("#input-address-country")[value],
-    line1: $(addressStr + "_line_1")[value],
-    line2: $(addressStr + "_line_2")[value] === "" ? $(addressStr + "_line_1")[value] : $(addressStr + "_line_2")[value],
-    state: (_b = $(addressStr + "_state")) == null ? void 0 : _b.options[(_a = $(addressStr + "_state")) == null ? void 0 : _a.selectedIndex].text
+    postal_code: $(addressStr + "zip")[valueKey],
+    city: $(addressStr + "city")[valueKey],
+    country: $(inputCountryId)[valueKey],
+    line1: $(addressStr + lineStr + "1")[valueKey],
+    line2: $(addressStr + lineStr + "2")[valueKey] === "" ? $(addressStr + lineStr + "1")[valueKey] : $(addressStr + lineStr + "2")[valueKey],
+    state: (_b = $(addressStr + "state")) == null ? void 0 : _b.options[(_a = $(addressStr + "state")) == null ? void 0 : _a.selectedIndex].text
   };
   return billingDetails;
 };
 
 // src/index.ts
-var patch = (app = window.App) => {
+var patch = () => {
+  const app = win.App;
   const originalConstructor = app.StripeElementsForm;
   let serializedConstructor = originalConstructor.toString();
   serializedConstructor = serializedConstructor.replace(/{\s*b(.+?)s\s*:\s*(.+?)\s*}/g, "{b$1s:App.SABA($2)}");
@@ -51,34 +60,31 @@ var patch = (app = window.App) => {
 };
 var stripeAddBillingAddress = () => {
   var _a, _b;
-  const offerSlug = (_a = window.location.href.match(/\/offers\/(.{8})/)) == null ? void 0 : _a[1];
-  const separator = /\s*[,|]\s*/;
-  const enabledOffers = "enabledOffers";
-  const disabledOffers = "disabledOffers";
+  const offerSlug = (_a = win.location.href.match(/\/offers\/(.{8})/)) == null ? void 0 : _a[1];
   const config = Object.assign(
     {
-      [enabledOffers]: "",
-      [disabledOffers]: ""
+      [enabledOffersKey]: "",
+      [disabledOffersKey]: ""
     },
     (_b = doc.currentScript) == null ? void 0 : _b.dataset
   );
   if (
     // Not a checkout page
     offerSlug === void 0 || // Or included in disabled offers
-    config[disabledOffers].split(separator).includes(offerSlug) || // Or not included in enabled offers
-    config[enabledOffers] !== "" && !config[enabledOffers].split(separator).includes(offerSlug)
+    config[disabledOffersKey].split(separator).includes(offerSlug) || // Or not included in enabled offers
+    config[enabledOffersKey] !== "" && !config[enabledOffersKey].split(separator).includes(offerSlug)
   ) {
     return;
   }
   domReady(
-    // Run the patched code
+    // Run the patch
     patch,
-    // But limit waiting for 10 seconds...
+    // And limit waiting for 10 seconds...
     1e4,
-    // For these objects to exist before running the patched code
+    // For these objects to exist before running the patch
     ["$", "App", "Stripe"],
     // And run only when address fields are present
-    [addressStr + "_zip"]
+    [inputCountryId]
   );
 };
 export {
