@@ -148,6 +148,14 @@ The script must run after Kajabi's checkout codes executed. The scripts in the C
 
 You can but you will lose the ability to get updates. You will have to update your codes manually. I don't recommend this.
 
+### Why do I get this error in the Console: `Uncaught (in promise) IntegrationError: We could not retrieve data from the specified Element. Please make sure the Element you are attempting to use is still mounted.`
+
+When the script runs it mounts the Stripe Element again with the right codes so it will submit the billing address. This detaches the old code from the Stripe Element. As a side effect, the previous event handlers of the old code can not see the Stripe Element anymore when the submit event happens. This is an expected normal occurence.
+
+You may ask, why not unmount the old code properly before doing the fix? The reason is because the Stripe Element object is not exposed to the global space so there is no way to fire the unmount routine of the Stripe Element. Therefore it will just be mounted to the new code leaving the old code as phantoms. Again, this is an expected normal occurence.
+
+This error does not affect how the checkout page works. It is an isolated error exception that was gracefully thrown out in the Console.
+
 ## 📦 Advanced Usage
 
 ### Install as ES Module

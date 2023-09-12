@@ -50,7 +50,7 @@ var patch = () => {
   const app = win.App;
   const originalConstructor = app.StripeElementsForm;
   let serializedConstructor = originalConstructor.toString();
-  serializedConstructor = serializedConstructor.replace(/{\s*b(.+?)s\s*:\s*(.+?)\s*}/g, "{b$1s:App.SABA($2)}");
+  serializedConstructor = serializedConstructor.replace(/{\s*(billing_details)\s*:\s*(.+?)\s*}/g, "{$1:App.SABA($2)}");
   const newConstructor = new Function("f", "s", "o", `(${serializedConstructor})(f,s,o)`);
   newConstructor.bindTo = originalConstructor.bindTo;
   newConstructor.prototype = originalConstructor.prototype;
