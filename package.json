@@ -1,6 +1,6 @@
 {
   "name": "osi4kjb-stripe-add-billing-address",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "This script adds the address to the billing details when Kajabi checkout form submits data to Stripe.",
   "license": "Apache-2.0",
   "author": "Jason Go <dev@jasongo.net> (https://www.jasongo.net)",
