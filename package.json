@@ -1,13 +1,24 @@
 {
   "name": "osi4kjb-stripe-add-billing-address",
   "version": "0.0.8",
-  "description": "",
-  "author": "Jason Go",
+  "description": "This script adds the address to the billing details when Kajabi checkout form submits data to Stripe.",
   "license": "Apache-2.0",
+  "author": "Jason Go <dev@jasongo.net> (https://www.jasongo.net)",
+  "repository": "https://github.com/jasongodev/osi4kjb-stripe-add-billing-address.git",
+  "homepage": "https://github.com/jasongodev/osi4kjb-stripe-add-billing-address",
+  "bugs": "https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/issues",
+  "funding": "https://paypal.me/jasongodev",
+  "keywords": [
+    "kajabi",
+    "stripe",
+    "checkout",
+    "address",
+    "billing",
+    "osi4kjb"
+  ],
   "type": "module",
-  "source": "src/index.ts",
-  "module": "dist/saba.mjs",
   "main": "dist/saba.mjs",
+  "module": "dist/saba.mjs",
   "browser": "dist/saba.min.js",
   "jsdelivr": "dist/saba.min.js",
   "unpkg": "dist/saba.min.js",
@@ -19,10 +30,10 @@
   "scripts": {
     "lint": "ts-standard",
     "format": "prettier --ignore-path src/patch.ts --check src/**",
-    "build:reset": "rimraf ./dist",
-    "build:esm": "esbuild src/index.ts --bundle --packages=external --legal-comments=none --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=esm --outfile=dist/saba.mjs",
-    "build:iife": "esbuild src/iife.ts --bundle --minify --sourcemap=linked --legal-comments=none --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --outfile=dist/saba.min.js",
-    "build": "run-p lint format build:reset && run-p build:esm build:iife"
+    "reset": "rimraf ./dist",
+    "build:esm": "esbuild src/index.ts --bundle --legal-comments=none --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=esm --outfile=dist/saba.mjs",
+    "build:iife": "esbuild src/iife.ts --bundle --legal-comments=none --banner:js='/*! Copyright 2023 Jason Go - Apache-2.0 */' --target=es2015 --format=iife --minify --sourcemap=linked --outfile=dist/saba.min.js",
+    "build": "run-p lint format reset && run-p build:*"
   },
   "devDependencies": {
     "esbuild": "^0.19.2",
@@ -31,14 +42,6 @@
     "rimraf": "^5.0.1",
     "ts-standard": "^12.0.2"
   },
-  "keywords": [
-    "kajabi",
-    "stripe",
-    "checkout",
-    "address",
-    "billing",
-    "osi4kjb"
-  ],
   "ts-standard": {
     "ignore": [
       "node_modules/**",
