@@ -25,6 +25,66 @@ Kajabi by default only submits the zip code to Stripe. This script will run when
 
 It is strongly advised to use the script from the CDN because it is automatically updated.
 
+### Optional Configuration
+
+You can enable or disable the script on specific offers by specifying the offer slug in the configuration.
+
+In this example offer URL, www.yourdomain.com/offers/`DcTeKx7o`/checkout, the `DcTeKx7o` is the offer slug. You may combine more slugs using a comma.
+
+#### Enable only on certain offers
+
+Add the `data-enabled-offers` attribute in the script tag as shown below.
+
+```html
+<script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"
+data-enabled-offers="zWPgUzB2,DcTeKx7o"
+></script>
+```
+Here's the behavior of this configuration:
+- `data-enabled-offers` not specified in script tag = Script will run on ALL offers
+- `data-enabled-offers` is blank = Script will run on ALL offers
+- `data-enabled-offers` has some slugs = Script will only run on these offers
+
+#### Disabled on certain offers
+
+Add the `data-disabled-offers` attribute in the script tag as shown below.
+
+```html
+<script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"
+data-disabled-offers="zWPgUzB2,DcTeKx7o"
+></script>
+```
+Here's the behavior of this configuration:
+- `data-disabled-offers` not specified in script tag = Ignored, proceed in checking `data-enabled-offers`
+- `data-disabled-offers` is blank = Ignored, proceed in checking `data-enabled-offers`
+- `data-disabled-offers` has some slugs = Script will not run on these slugs regardless of `data-enabled-offers` setting.
+
+### You can use both configurations at the same time but `data-disabled-offers` takes precedence
+
+```html
+<!-- Only runs on Offer zWPgUzB2, disabled on DcTeKx7o, will not run with other offers --->
+<script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"
+data-enabled-offers="zWPgUzB2"
+data-disabled-offers="DcTeKx7o"
+></script>
+```
+
+```html
+<!-- Only runs on Offer aW3dfgvB, disabled on DcTeKx7o, also disabled on zWPgUzB2 because disable config takes precedence, and will not run with other offers --->
+<script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"
+data-enabled-offers="aW3dfgvB,zWPgUzB2"
+data-disabled-offers="DcTeKx7o,zWPgUzB2"
+></script>
+```
+
+```html
+<!-- Will run on all offers except DcTeKx7o and zWPgUzB2 --->
+<script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"
+data-enabled-offers=""
+data-disabled-offers="DcTeKx7o,zWPgUzB2"
+></script>
+```
+
 ## Frequently Asked Questions
 
 ### For whom is this script for?
@@ -59,6 +119,14 @@ If you have your own Kajabi-linked Stripe account and Kajabi Payments enabled in
 
 The script only affects the codes related to your own Kajabi-linked Stripe account. It will not affect the codes and routines related to Kajabi Payments even if it is based on Stripe Connect. Also, Kajabi Payments uses Kajabi's US-based Stripe account which does not need the complete address details during payment authorization.
 
+### Will this affect the speed of my checkout page?
+
+No. The script is so tiny and compressed that it will be downloaded in an instant. It is also cached globally using a CDN so it is always available. The script also runs asynchronously and will not block rendering.
+
+### Will this affect the speed of my landing pages?
+
+No. The script only runs in the checkout pages because it is only embedded in the Checkout Footer Code.
+
 ### Is this compatible with Kajabi's Payment Popups?
 
 No. Payment Popups only works for US-based Stripe accounts. You don't need to submit the complete address to Stripe US accounts. Also, the script only runs in the checkout page and not in landing or site pages.
@@ -72,14 +140,6 @@ Yes. The Embed Checkout Form Script (osi4kjb-embed-checkout-form) is a script th
 ### Is this compatible with Jodee's Tab Switcher?
 Yes. Jodee Peevor, another Kajabi Hero, created a code that allows switching of offers based on pricing using tab switchers. It works by loading the other offer's page as you click the tabs. These codes do not conflict nor concern the script and therefore is compatible.
 
-### Will this affect the speed of my checkout page?
-
-No. The script is so tiny and compressed that it will be downloaded in an instant. It is also cached globally using a CDN so it is always available. The script also runs asynchronously and will not block rendering.
-
-### Will this affect the speed of my landing pages?
-
-No. The script only runs in the checkout pages because it is only embedded in the Checkout Footer Code.
-
 ### Why do we put it in Checkout Footer Code and not in the Header Code?
 
 The script must run after Kajabi's checkout codes executed. The scripts in the Checkout Footer Code runs after Kajabi's code and therefore is the ideal place to put the script.
@@ -87,7 +147,6 @@ The script must run after Kajabi's checkout codes executed. The scripts in the C
 ### Can I embed the actual JavaScript code as an inline script? I want to load it together with the checkout page at once.
 
 You can but you will lose the ability to get updates. You will have to update your codes manually. I don't recommend this.
-
 
 ## 📦 Advanced Usage
 
@@ -127,3 +186,22 @@ pnpm build
   - saba.min.js: Minified script for use with browser. Self-executing.
   - saba.min.js.map: Sourcemap for debugging.
   - saba.mjs: ES Module script for importing in packages
+
+# License
+Copyright 2023 Jason Go
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+# Sponsors
+<a target="_blank" href="https://www.browserstack.com/"><img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png"></a><br>
+[BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
