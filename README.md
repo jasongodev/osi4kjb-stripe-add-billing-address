@@ -1,5 +1,5 @@
 # Kajabi Stripe Add Billing Address
-[![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/osi4kjb-stripe-add-billing-address?color=blue&label=Downloads&logo=jsdelivr)](https://www.jsdelivr.com/package/npm/osi4kjb-stripe-add-billing-address)
+[![jsDelivr hits (npm)](https://img.shields.io/jsdelivr/npm/hm/osi4kjb-stripe-add-billing-address?color=blue&label=Downloads&logo=jsdelivr)](https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address/)
 [![GitHub](https://img.shields.io/github/license/jasongodev/osi4kjb-stripe-add-billing-address?&color=blue&label=License&logo=github)](LICENSE)
 [![CodeQL](https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/actions/workflows/github-code-scanning/codeql)
 [![](https://img.shields.io/badge/Code%20Style-Standard-brightgreen?logo=typescript)](https://standardjs.com/)
