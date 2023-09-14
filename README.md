@@ -17,7 +17,7 @@ Kajabi by default only submits the zip code to Stripe. This script will run when
 ## 🔧 Installation
 
 1. Go to Kajabi Admin Settings -> Checkout Settings
-2. Go to the Checkout Footer Code box andcope-paste this code:
+2. Go to the Checkout Footer Code box and copy-paste this code:
 
 ```html
 <script async src="https://cdn.jsdelivr.net/npm/osi4kjb-stripe-add-billing-address@latest"></script>
