@@ -89,15 +89,15 @@ data-disabled-offers="DcTeKx7o,zWPgUzB2"
 
 ### For whom is this script for?
 - For merchants whose Stripe accounts were registered in a country that requires the complete billing address of the customers. Stripe India accounts are an example of this.
-- For other regular Stripe accounts that needs the complete address for automation. For example, when Stripe is connected to Zapier or other webhooks that needs the address to be passed on the next workflow like automated shipping or conversion tracking.
+- For other regular Stripe accounts that need the complete address for automation. For example, when Stripe is connected to Zapier or other webhooks for automated shipping or conversion tracking.
 
 ### Why not Kajabi submit the complete address to Stripe?
-Addresses are considered personal identifiers and therefore certain jurisdictions like the EU have rules regarding sharing of information to third party processors. For most cases, addresses are not needed during payment authorizations.
+Addresses are considered personal identifiers and therefore certain jurisdictions like the EU have rules regarding the sharing of information with third-party processors. In most cases, addresses are not needed during payment authorizations.
 
-However, certain countries like India requires the complete address. You may say, why not Kajabi just include the address detail for Stripe India merchants? Well, the Stripe API does not have any way to tell which country the Stripe merchant belongs and so Kajabi does not have a way to know.
+However, certain countries like India require the complete address. You may say, why not Kajabi just include the address detail for Stripe India merchants? Well, the Stripe API does not have any way to tell which country the Stripe merchant belongs so Kajabi does not have a way to know.
 
 ### What exactly does Stripe India want?
-- Offers with INR currency should be used by India-residents only.
+- Offers with INR currency should be used by Indian residents only.
 - Offers with INR currency may be used by non-India residents if their card's bank issuer allows for it. Still, may or may not be successful.
 - Offers with non-INR currency should be used by non-India residents only.
 - Residency is usually judged using the buyer's card origin and IP address.
@@ -109,15 +109,15 @@ Yes. The script only patches the code related to the `billing_details` property 
 
 ### Will this work if my checkout page includes PayPal?
 
-If you have Stripe and Paypal enabled in your offers, the script will only work for Stripe payments.
+If you have Stripe and PayPal enabled in your offers, the script will only work for Stripe payments.
 
-The script only affects the codes related to your own Kajabi-linked Stripe account. It will not affect the code integration with PayPal. It will not include the address details when the form is submitted to PayPal.
+The script only affects the codes related to your Kajabi-linked Stripe account. It will not affect the code integration with PayPal. It will not include the address details when the form is submitted to PayPal.
 
 ### Will this affect how Kajabi Payments powered by Stripe submits data to Stripe?
 
-If you have your own Kajabi-linked Stripe account and Kajabi Payments enabled in your offers, the script will only work for your own Stripe account's payments.
+If you have your Kajabi-linked Stripe account and Kajabi Payments enabled in your offers, the script will only work for your own Stripe account's payments.
 
-The script only affects the codes related to your own Kajabi-linked Stripe account. It will not affect the codes and routines related to Kajabi Payments even if it is based on Stripe Connect. Also, Kajabi Payments uses Kajabi's US-based Stripe account which does not need the complete address details during payment authorization.
+The script only affects the codes related to your Kajabi-linked Stripe account. It will not affect the codes and routines related to Kajabi Payments even if it is based on Stripe Connect. Also, Kajabi Payments uses Kajabi's US-based Stripe account which does not need the complete address details during payment authorization.
 
 ### Will this affect the speed of my checkout page?
 
@@ -125,24 +125,24 @@ No. The script is so tiny and compressed that it will be downloaded in an instan
 
 ### Will this affect the speed of my landing pages?
 
-No. The script only runs in the checkout pages because it is only embedded in the Checkout Footer Code.
+No. The script only runs on the checkout pages because it is only embedded in the Checkout Footer Code.
 
 ### Is this compatible with Kajabi's Payment Popups?
 
-No. Payment Popups only works for US-based Stripe accounts. You don't need to submit the complete address to Stripe US accounts. Also, the script only runs in the checkout page and not in landing or site pages.
+No. Payment Popups only work for US-based Stripe accounts. You don't need to submit the complete address to Stripe US accounts. Also, the script only runs on the checkout page and not on landing or site pages.
 
-In the future when Payment Popups becomes available to other Stripe countries then we will make updates to this script to suit your needs.
+In the future when Payment Popups become available to other Stripe countries then we will make updates to this script to suit your needs.
 
 ### Is this compatible with the Embed Checkout Form Script?
 
-Yes. The Embed Checkout Form Script (osi4kjb-embed-checkout-form) is a script that allows you to embed Kajabi checkout forms in any site or landing pages under the same domain. The codes do not conflict nor concern each other and therefore is compatible.
+Yes. The Embed Checkout Form Script (osi4kjb-embed-checkout-form) is a script that allows you to embed Kajabi checkout forms in any site or landing page under the same domain. The codes do not conflict with nor concern each other and therefore are compatible.
 
 ### Is this compatible with Jodee's Tab Switcher?
-Yes. Jodee Peevor, another Kajabi Hero, created a code that allows switching of offers based on pricing using tab switchers. It works by loading the other offer's page as you click the tabs. These codes do not conflict nor concern the script and therefore is compatible.
+Yes. Jodee Peevor, another Kajabi Hero, created a code that allows the switching of offers based on pricing using tab switchers. It works by loading the other offer's page as you click the tabs. These codes do not conflict with nor concern the script and therefore are compatible.
 
-### Why do we put it in Checkout Footer Code and not in the Header Code?
+### Why do we put it in the Checkout Footer Code and not in the Header Code?
 
-The script must run after Kajabi's checkout codes executed. The scripts in the Checkout Footer Code runs after Kajabi's code and therefore is the ideal place to put the script.
+The script must run after Kajabi's checkout codes are executed. The scripts in the Checkout Footer Code run after Kajabi's code and therefore are the ideal place to put the script.
 
 ### Can I embed the actual JavaScript code as an inline script? I want to load it together with the checkout page at once.
 
@@ -150,9 +150,9 @@ You can but you will lose the ability to get updates. You will have to update yo
 
 ### Why do I get this error in the Console: `Uncaught (in promise) IntegrationError: We could not retrieve data from the specified Element. Please make sure the Element you are attempting to use is still mounted.`
 
-When the script runs it mounts the Stripe Element again with the right codes so it will submit the billing address. This detaches the old code from the Stripe Element. As a side effect, the previous event handlers of the old code can not see the Stripe Element anymore when the submit event happens. This is an expected normal occurence.
+When the script runs it mounts the Stripe Element again with the right codes so it will submit the billing address. This detaches the old code from the Stripe Element. As a side effect, the previous event handlers of the old code can not see the Stripe Element anymore when the submit event happens. This is an expected normal occurrence.
 
-You may ask, why not unmount the old code properly before doing the fix? The reason is because the Stripe Element object is not exposed to the global space so there is no way to fire the unmount routine of the Stripe Element. Therefore it will just be mounted to the new code leaving the old code as phantoms. Again, this is an expected normal occurence.
+You may ask, why not unmount the old code properly before doing the fix? The reason is that the Stripe Element object is not exposed to the global space so there is no way to fire the unmount routine of the Stripe Element. Therefore it will just be mounted to the new code leaving the old code as phantoms. Again, this is an expected normal occurrence.
 
 This error does not affect how the checkout page works. It is an isolated error exception that was gracefully thrown out in the Console.
 
