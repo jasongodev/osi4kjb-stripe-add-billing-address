@@ -4,13 +4,13 @@
 [![CodeQL](https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/jasongodev/osi4kjb-stripe-add-billing-address/actions/workflows/github-code-scanning/codeql)
 [![](https://img.shields.io/badge/Code%20Style-Standard-brightgreen?logo=typescript)](https://standardjs.com/)
 
-This script adds the address to the billing details when Kajabi checkout form submits data to Stripe.
+This script adds the address to the billing details when the Kajabi checkout form submits data to Stripe.
 
 Kajabi by default only submits the zip code to Stripe. This script will run when the address fields are present in the checkout form and will include the address details upon submission to Stripe.
 
 ## ✨ Features
 - Super tiny, < 1KB minified gzipped.
-- Set and forget. No configuration required.
+- Set and forget. No configuration is required.
 - Zero dependencies.
 - Made by a Kajabi Hero!
 
@@ -29,7 +29,7 @@ It is strongly advised to use the script from the CDN because it is automaticall
 
 You can enable or disable the script on specific offers by specifying the offer slug in the configuration.
 
-In this example offer URL, `www.yourdomain.com/offers/DcTeKx7o/checkout`, the `DcTeKx7o` is the offer slug. You may combine more slugs using a comma.
+In this example, the offer URL `www.yourdomain.com/offers/DcTeKx7o/checkout`, the `DcTeKx7o` is the offer slug. You may combine more slugs using a comma.
 
 #### Enable only on certain offers
 
